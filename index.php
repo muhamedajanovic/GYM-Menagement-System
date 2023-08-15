@@ -17,6 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
   $results = $run->get_result();
 
+  $conn->close();
+
   if ($results->num_rows == 1) {
     $admin = $results->fetch_assoc();
     if (password_verify($password, $admin['password'])) {
