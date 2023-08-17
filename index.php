@@ -1,6 +1,6 @@
 <?php
 
-require_once 'config.php';
+require_once 'backend/config.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -17,21 +17,23 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
   $results = $run->get_result();
 
-  $conn->close();
 
   if ($results->num_rows == 1) {
     $admin = $results->fetch_assoc();
     if (password_verify($password, $admin['password'])) {
       header('location: admin_dashboard.php');
       $_SESSION["admin_id"] = $admin["admin_id"];
+      $conn->close();
     } else {
       header('location: index.php');
       $_SESSION["error"] = "Netacan password";
+      $conn->close();
       exit;
     }
   } else {
     header('location: index.php');
     $_SESSION["error"] = "Netacan username";
+    $conn->close();
     exit;
   }
 }
